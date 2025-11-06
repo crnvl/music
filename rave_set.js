@@ -3,6 +3,9 @@ await (async () => { (0, eval)(await (await fetch('https://raw.githubusercontent
 samples('github:eddyflux/crate')
 samples('github:Nikeryms/Samples')
 samples('github:switchangel/breaks')
+samples({
+  'vocal_loop_130_Am': '91V_NUXE_130_vocal_hook_care_for_u_pitched_Am.wav',
+}, 'github:crnvl/samples')
 
 
 
@@ -26,14 +29,16 @@ setCps(bpm /60 /4)
 // VOCALS
 _$: s("vocals:1").fit().room(.25).pan(rand).n("-7").scale(scale).scrub(berlin.seg(8).rib("<9 9 8 1>",1 )).trancegate(1.5, 45, 1).o(2).gain(1.5)
 
-_$: s("wvocal:2/8").fit()
+// 130 BPM A MINOR
+_$: s("vocal_loop_130_Am:2/8").fit()
   .trancegate(.75, 0, 2)
   .gain(1)
   .delay(.5).delaytime(bpm / 4)
   .room(1)
   .o(2)
 
-_$: s("wvocal:2/8").fit()
+// 130 BPM A MINOR
+_$: s("vocal_loop_130_Am:2/8").fit()
   .gain(1)
   .delay(.5).delaytime(bpm / 4)
   .room(1)
