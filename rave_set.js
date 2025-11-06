@@ -15,7 +15,7 @@ samples({
 
 // OPTIONS
 const scale = "a:minor"
-const bpm = 110
+const bpm = 85
 
 setCps(bpm /60 /4)
 
@@ -133,6 +133,7 @@ const basslines = [
   "<0 2 3 5>",
   "<3 5 7 9>@3 <10 12 14 16>",
   "<5 5 7 0>",
+  "<3@3 7 5@3 0>",
 ]
 
 const melodies = [
@@ -151,7 +152,7 @@ const arps = [
 
 // ---------------------------------------------------------------------------------------------
 
-const bassline = basslines[4]
+const bassline = basslines[5]
 const melody   = melodies[5]
 const arp      = melodies[4]
 
@@ -185,8 +186,8 @@ _$: s("supersaw")
   .decay(slider(0.568,0,1))
   .release(slider(0.446))
   .hpf(350)
-  //.rlpf(slider(0.625))
-  .rlpf("<.35 .45 .5 .65>")
+  .rlpf(slider(0.477))
+  //.rlpf("<.35 .45 .5 .65>")
   .compressor(10)
   .gain(1.35)
   .trancegate(1.5, 45, 1)
