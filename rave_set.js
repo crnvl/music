@@ -5,6 +5,7 @@ samples('github:Nikeryms/Samples')
 samples('github:switchangel/breaks')
 samples({
   'vocal_loop_130_Am': '91V_NUXE_130_vocal_hook_care_for_u_pitched_Am.wav',
+  'vocal_loop_142_Am': 'OSS_SOJD_142_VOCAL_LOOP_HAUNTED_Am.wav',
 }, 'github:crnvl/samples')
 
 
@@ -13,7 +14,7 @@ samples({
 
 // OPTIONS
 const scale = "a:minor"
-const bpm = 130
+const bpm = 142
 
 
 
@@ -30,7 +31,7 @@ setCps(bpm /60 /4)
 _$: s("vocals:1").fit().room(.25).pan(rand).n("-7").scale(scale).scrub(berlin.seg(8).rib("<9 9 8 1>",1 )).trancegate(1.5, 45, 1).o(2).gain(1.5)
 
 // 130 BPM A MINOR
-_$: s("vocal_loop_130_Am:2/8").fit()
+_$: s("vocal_loop_130_Am/8").fit()
   .trancegate(.75, 0, 2)
   .gain(1)
   .delay(.5).delaytime(bpm / 4)
@@ -38,8 +39,23 @@ _$: s("vocal_loop_130_Am:2/8").fit()
   .o(2)
 
 // 130 BPM A MINOR
-_$: s("vocal_loop_130_Am:2/8").fit()
+_$: s("vocal_loop_130_Am/8").fit()
   .gain(1)
+  .delay(.5).delaytime(bpm / 4)
+  .room(1)
+  .o(2)
+
+// 142 BPM A MINOR
+_$: s("vocal_loop_142_Am/16").fit()
+  .trancegate(.75, 45, 2)
+  .gain(1.5)
+  .delay(.5).delaytime(bpm / 4)
+  .room(1)
+  .o(2)
+
+// 142 BPM A MINOR
+_$: s("vocal_loop_142_Am/16").fit()
+  .gain(1.25)
   .delay(.5).delaytime(bpm / 4)
   .room(1)
   .o(2)
@@ -83,6 +99,7 @@ const basslines = [
   "<0@6 5 6>",
   "<0 2 3 5>",
   "<3 5 7 9>@3 <10 12 14 16>",
+  "<5 5 7 0>",
 ]
 
 const melodies = [
@@ -90,7 +107,8 @@ const melodies = [
   "0@2 <-7 [-5 -2]>@3 <0 -3 2 1>@3",
   "<-7 -5 -3 [-2 0]>",
   "<12 12 10 10>@2 <7> <9 3>",
-  "<7 4 6 2>*2@3 <4 6 2 7>*2".add("0, -7")
+  "<7 4 6 2>*2@3 <4 6 2 7>*2".add("0, -7"),
+  "<5@3 7@2 9>",
 ]
 
 const arps = [
@@ -100,8 +118,8 @@ const arps = [
 
 // ---------------------------------------------------------------------------------------------
 
-const bassline = basslines[2]
-const melody   = melodies[4]
+const bassline = basslines[4]
+const melody   = melodies[5]
 const arp      = melodies[4]
 
 
@@ -175,7 +193,7 @@ _$: s("supersaw")
   .release("<.2 .4 .6 .8>")
 
   .hpf(500)
-  .rlpf(slider(0.466))
+  .rlpf(slider(0.341))
   .delay(.75)
   .delaytime(bpm / 4)
   .room(1)
