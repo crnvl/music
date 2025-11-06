@@ -3,6 +3,7 @@ await (async () => { (0, eval)(await (await fetch('https://raw.githubusercontent
 samples('github:eddyflux/crate')
 samples('github:Nikeryms/Samples')
 samples('github:switchangel/breaks')
+samples('github:switchangel/pad')
 samples({
   'vocal_loop_130_Am': '91V_NUXE_130_vocal_hook_care_for_u_pitched_Am.wav',
   'vocal_loop_142_Am': 'OSS_SOJD_142_VOCAL_LOOP_HAUNTED_Am.wav',
@@ -14,11 +15,7 @@ samples({
 
 // OPTIONS
 const scale = "a:minor"
-const bpm = 142
-
-
-
-
+const bpm = 110
 
 setCps(bpm /60 /4)
 
@@ -66,32 +63,68 @@ _$: s("vocal_loop_142_Am/16").fit()
 
 
 
-// DRUMS
-_$: s("crate_bd:24!4").duckorbit("2").duckattack(bpm / 512).duckdepth(.75)
 
+
+
+
+
+
+
+// DRUMS
+// - - - - KICKS
+_$: s("crate_bd:24!4").duckorbit("2").duckattack(bpm / 512).duckdepth(.75)
+_$: s("crate_bd:7!4").duckorbit("2").duckattack(bpm / 512).duckdepth(.75)
+
+// - - - - OFFBEAT HIHAT
 _$: s("crate_hh:1")
   .gain(.75)
   .beat("1, 3, 5, 7", 8)
 
+// - - - - FAST HIHAT
 _$: s("hh!16")
   .gain(.75)
   .pan(rand)
   .o(3)
 
+// - - - - CLAP
 _$: s("crate_cp:2")
   .room(.15)
   .delay(.25).delaytime(bpm / 100 / 8)
   .beat("<<4, 12>@3 <4, 12, 15>>", 16)
 
+// - - - - RIMSHOT RYTHM
 _$: s("crate_rim")
   .gain(.75)  
   .trancegate(1.5, 45, 1)
   .o(2)
 
+// - - - - NORMAL BREAK
 _$: s("breaks:4/2").fit()
   .compressor(-10)
   .gain(1)
+  .o(2)
   ._scope()
+// - - - - CHOPPED BREAK
+_$: s("breaks/2").fit()
+  .scrub(
+    irand(16).div(16).seg(8)
+    .rib("<4 20 1 2 18 23 12 12>", 1)
+    .almostNever(ply("2 | 4")))
+  .compressor(-10)
+  .gain(1)
+  .o(2)
+  ._scope()
+
+
+
+
+
+
+
+
+
+
+
 
 // ---------------------------------------------------------------------------------------------
 const basslines = [
@@ -151,19 +184,18 @@ _$: s("supersaw")
   .sustain(slider(0.508,0,1))
   .decay(slider(0.568,0,1))
   .release(slider(0.446))
-
   .hpf(350)
   //.rlpf(slider(0.625))
   .rlpf("<.35 .45 .5 .65>")
   .compressor(10)
   .gain(1.35)
-  
   .trancegate(1.5, 45, 1)
   .n(
     bassline
     .sub("14, 21")
   ).scale(scale)
   .o(2)
+
 // - - - - SUB BASS
 _$: s("sine")
   .fm(.5).fmwave("saw")
@@ -191,7 +223,6 @@ _$: s("supersaw")
   .sustain(slider(0.673,0,1))
   .decay(slider(0.254,0,1))
   .release("<.2 .4 .6 .8>")
-
   .hpf(500)
   .rlpf(slider(0.341))
   .delay(.75)
@@ -199,7 +230,6 @@ _$: s("supersaw")
   .room(1)
   .compressor(10)
   .pan(rand)
-  
   .trancegate(1.5, 90, 1)
   .n(
     melody
@@ -207,17 +237,26 @@ _$: s("supersaw")
   ).scale(scale)
   .o(4)
 
-
+// - - - - PAD SAMPLER (NOT IN KEY)
+_$: s("<swpad swpad:2 swpad:4 swpad:3>/4")
+  .pan(rand)
+  .gain(1)
+  .o(2)
 
 // - - - - ARP SYNTH
 _$: s("sine!16")
   .dec(.1).fm(time).fmh(time).o(4)
   .gain(.75)
   .room(1)
-  
   .n(
     arp
      .add(14)
   ).scale(scale)
+
+// - - - - GROOVE SYNTH
+_$: s("pulse")
+  .dec(.1).fm(time).fmh(time).o(4)
+  .gain(.5)
+  .beat("<2, 6, 10, 11, 14>", 16)
 
 // ---------------------------------------------------------------------------------------------
