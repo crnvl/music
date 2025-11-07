@@ -7,6 +7,10 @@ samples('github:switchangel/pad')
 samples({
   'vocal_loop_130_Am': '91V_NUXE_130_vocal_hook_care_for_u_pitched_Am.wav',
   'vocal_loop_142_Am': 'OSS_SOJD_142_VOCAL_LOOP_HAUNTED_Am.wav',
+  'guitar_loop_162_Bbmin': 'MO_JANE_162_guitar_loop_this_is_the_only_guitar_loop_fuck_you_Bbmin.wav',
+  'drum_loop_140': 'DS_ECT2_140_drum_loop_full_furnace.wav',
+  'bass_loop_140_D': 'DS_ECT2_140_synth_bass_loop_moltensystem_D.wav',
+  'pluck_loop_140_Dmaj': 'MO_PS_140_melody_loop_pluck_vocal_pretty_Dmaj.wav',
 }, 'github:crnvl/samples')
 
 
@@ -14,8 +18,11 @@ samples({
 
 
 // OPTIONS
-const scale = "a:minor"
-const bpm = 85
+const scale = "d:major"
+const bpm = 140
+all(x => x
+     //.room("<0 0 0 0 0 0 1>/2")
+   )
 
 setCps(bpm /60 /4)
 
@@ -44,9 +51,10 @@ _$: s("vocal_loop_130_Am/8").fit()
 
 // 142 BPM A MINOR
 _$: s("vocal_loop_142_Am/16").fit()
+  .begin("<.25 .26 .95 .95>")
   .trancegate(.75, 45, 2)
-  .gain(1.5)
-  .delay(.5).delaytime(bpm / 4)
+  .gain("<1.5 1.5 2 2>")
+  //.delay(.5).delaytime(bpm / 4)
   .room(1)
   .o(2)
 
@@ -61,6 +69,30 @@ _$: s("vocal_loop_142_Am/16").fit()
 
 
 
+
+// LOOPS
+// 162 BPM A# MINOR
+_$: s("guitar_loop_162_Bbmin/8").fit()
+  .distort("3:1:diode")
+  .compressor(-25)
+  .hpf(500)
+  .gain(.5)
+  .room(1)
+  .o(2)
+
+// 140 BPM DRUMS
+_$: s("drum_loop_140/8").fit()
+  .gain(.75)
+
+// 140 BPM D
+_$: s("bass_loop_140_D/4").fit()
+  .compressor(10)
+  .o(2)
+
+// 140 BPM D MAJOR
+_$: s("pluck_loop_140_Dmaj/8").fit()
+  .room(1)
+  .o(2)
 
 
 
@@ -88,7 +120,7 @@ _$: s("hh!16")
 
 // - - - - CLAP
 _$: s("crate_cp:2")
-  .room(.15)
+  .room(.1)
   .delay(.25).delaytime(bpm / 100 / 8)
   .beat("<<4, 12>@3 <4, 12, 15>>", 16)
 
@@ -99,11 +131,11 @@ _$: s("crate_rim")
   .o(2)
 
 // - - - - NORMAL BREAK
-_$: s("breaks:4/2").fit()
+_$: s("breaks:2/2").fit()
   .compressor(-10)
   .gain(1)
   .o(2)
-  ._scope()
+
 // - - - - CHOPPED BREAK
 _$: s("breaks/2").fit()
   .scrub(
@@ -113,7 +145,6 @@ _$: s("breaks/2").fit()
   .compressor(-10)
   .gain(1)
   .o(2)
-  ._scope()
 
 
 
@@ -134,6 +165,7 @@ const basslines = [
   "<3 5 7 9>@3 <10 12 14 16>",
   "<5 5 7 0>",
   "<3@3 7 5@3 0>",
+  "<7 5 3 3>",
 ]
 
 const melodies = [
@@ -143,6 +175,7 @@ const melodies = [
   "<12 12 10 10>@2 <7> <9 3>",
   "<7 4 6 2>*2@3 <4 6 2 7>*2".add("0, -7"),
   "<5@3 7@2 9>",
+  "<7 5 3 3>@3 <12 14>",
 ]
 
 const arps = [
@@ -152,9 +185,9 @@ const arps = [
 
 // ---------------------------------------------------------------------------------------------
 
-const bassline = basslines[5]
-const melody   = melodies[5]
-const arp      = melodies[4]
+const bassline = "<5 4 3 3>".add(7)
+const melody   = "<5 4 3 3>@3 <7 - 5 5>".add(7)
+const arp      = "<3 4 5 5>*8"
 
 
 
@@ -182,15 +215,15 @@ const arp      = melodies[4]
 // - - - - MID BASS
 _$: s("supersaw")
   //.fm(.5).fmwave("brown")
-  .sustain(slider(0.508,0,1))
-  .decay(slider(0.568,0,1))
-  .release(slider(0.446))
+  .sustain(slider(1,0,1))
+  .decay(slider(0.424,0,1))
+  .release(slider(0.386))
   .hpf(350)
-  .rlpf(slider(0.477))
+  .rlpf(slider(0.489))
   //.rlpf("<.35 .45 .5 .65>")
   .compressor(10)
   .gain(1.35)
-  .trancegate(1.5, 45, 1)
+  //.trancegate(1.5, 45, 1)
   .n(
     bassline
     .sub("14, 21")
@@ -222,13 +255,14 @@ _$: s("sine")
 _$: s("supersaw")
   .fm(.5).fmwave("brown")
   .sustain(slider(0.673,0,1))
-  .decay(slider(0.254,0,1))
+  .decay(slider(0.424,0,1))
   .release("<.2 .4 .6 .8>")
   .hpf(500)
-  .rlpf(slider(0.341))
+  .rlpf(slider(0.784))
+  .gain(slider(0.727))
   .delay(.75)
   .delaytime(bpm / 4)
-  .room(1)
+  //.room(1)
   .compressor(10)
   .pan(rand)
   .trancegate(1.5, 90, 1)
@@ -239,15 +273,16 @@ _$: s("supersaw")
   .o(4)
 
 // - - - - PAD SAMPLER (NOT IN KEY)
-_$: s("<swpad swpad:2 swpad:4 swpad:3>/4")
+_$: s("<swpad swpad:2 swpad:4 swpad:3>/2")
   .pan(rand)
   .gain(1)
   .o(2)
 
 // - - - - ARP SYNTH
 _$: s("sine!16")
-  .dec(.1).fm(time).fmh(time).o(4)
+  .dec(.1).o(4)
   .gain(.75)
+  .delay(.7)
   .room(1)
   .n(
     arp
@@ -257,7 +292,7 @@ _$: s("sine!16")
 // - - - - GROOVE SYNTH
 _$: s("pulse")
   .dec(.1).fm(time).fmh(time).o(4)
-  .gain(.5)
+  .gain(.75)
   .beat("<2, 6, 10, 11, 14>", 16)
 
 // ---------------------------------------------------------------------------------------------
