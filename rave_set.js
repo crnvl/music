@@ -24,15 +24,15 @@ setCpm(bpm / 4)
 
 
 
-_GYW_MAIN_VOCALS: s("gyw_vocals:[<0>]")
-  .chop(32).cut(1).loopAt(8)
-  .sometimes(ply("2 | 3"))
-  //.rev()
-  .room(.35).rsize(7)
-  .delay(.25)
-  .coarse(2)
+_GYW_MAIN_VOCALS: s("gyw_vocals:[<0>*8]")
+  .chop(16).cut(1).loopAt(8)
+  //.scrub(berlin.fast(2).seg(8))
+  //.sometimes(ply("2 | 3"))
+  .gain(.75)
+  .room(.5).rsize(7)
+  //.coarse(2)
   .lpf(7500)
-  .hpf(1000)
+  //.hpf(1000)
   .compressor(20)
   .o(4)
 
@@ -40,10 +40,11 @@ _GYW_MAIN_VOCALS: s("gyw_vocals:[<0>]")
 
 
 _GYW_MAIN_MELODY: s("gyw_melody:[<0>]")
-  .chop(32).cut(2).loopAt(4)
+  .chop(16).cut(2).loopAt(4)
+  .scrub("<0!8>")
   .compressor(-20)
   .gain(.75)
-  .room(1).rsize(2)
+  //.room(1).rsize(2)
   .o(3)
 
 
@@ -70,7 +71,7 @@ _$: s("crate_hh:1")
 
 // - - - - FAST HIHAT
 _$: s("hh!16")
-  .gain(.75)
+  .gain(.5)
   .pan(rand)
   .o(3)
 
@@ -121,6 +122,7 @@ const basslines = [
   "<5 5 7 0>",
   "<0@4 7 5 3 3>",
   "<7 5 3 3>",
+  "<3 3 5 5 3 3 5 2>@3 <12 14>" , // GET YOUR WISH FLIP
 ]
 
 const melodies = [
@@ -131,19 +133,25 @@ const melodies = [
   "<7 4 6 2>*2@3 <4 6 2 7>*2".add("0, -7"),
   "<5@3 7@2 9>",
   "<7 5 3 3>@3 <12 14>",
+  "<7 - 5 - 9 - 3>", // GET YOUR WISH FLIP
 ]
 
 const arps = [
   "<14 16 12 10>*8".sub(7),
   "<0@4 5@2 6@2>*8".sub(7),
+  "<7 - 5 - 9 - 3>", // GET YOUR WISH FLIP
+]
+
+const pads = [
+  "<[<<5, 7, 9>@2 <0, 3, 5>@2>]>", // GET YOUR WISH FLIP
 ]
 
 // ---------------------------------------------------------------------------------------------
 
-const bassline = "<3 3 5 5 3 3 5 2>@3 <12 14>"
-const melody   = "<7 - 5 - 9 - 3>"
-const arp      = "<7 - 5 - 9 - 3>"
-const pad      = "<[<<5, 7, 9>@2 <0, 3, 5>@2>]>"
+const bassline = "<0 3>"
+const melody   = "<- 12 - - >"
+const arp      = "<7>"
+const pad      = "<7 0 3 12>"
 
 
 
@@ -170,7 +178,7 @@ _MID_BASS: s("supersaw")
   .decay(slider(0.424,0,1))
   .release(slider(0.58))
   .hpf(350)
-  .rlpf(slider(0.466))
+  .rlpf(slider(0.386))
   //.rlpf("<.35 .45 .5 .65>")
   .compressor(10)
   .gain(1.35)
@@ -209,7 +217,7 @@ _LEAD_SYNTH: s("supersaw")
   .release("<.2 .4 .6 .8>")
   .hpf(500)
   .rlpf("<.7@6 .85 1>/2")
-  .gain(slider(0.443))
+  .gain(slider(0.568))
   .delay(.75)
   .delaytime(bpm / 4)
   .room(1)
