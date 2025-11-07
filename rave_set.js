@@ -4,119 +4,61 @@ samples('github:eddyflux/crate')
 samples('github:Nikeryms/Samples')
 samples('github:switchangel/breaks')
 samples('github:switchangel/pad')
-samples({
-  'vocal_loop_130_Am': '91V_NUXE_130_vocal_hook_care_for_u_pitched_Am.wav',
-  'vocal_loop_142_Am': 'OSS_SOJD_142_VOCAL_LOOP_HAUNTED_Am.wav',
-  'guitar_loop_162_Bbmin': 'MO_JANE_162_guitar_loop_this_is_the_only_guitar_loop_fuck_you_Bbmin.wav',
-  'drum_loop_140': 'DS_ECT2_140_drum_loop_full_furnace.wav',
-  'bass_loop_140_D': 'DS_ECT2_140_synth_bass_loop_moltensystem_D.wav',
-  'pluck_loop_140_Dmaj': 'MO_PS_140_melody_loop_pluck_vocal_pretty_Dmaj.wav',
-  'vocal_loop_140_fuckthatbeatup': 'DS_ECT2_140_vocal_chop_loop_fuckthatbeatup.wav',
-}, 'github:crnvl/samples')
+samples('github:internetmoment/get-your-wish')
 
 
 
 
 
 // OPTIONS
-const scale = "d:major"
-const bpm = 110
+const scale = "b:major"
+const bpm = 95
 all(x => x
      //.room(.5)
    )
 
-setCps(bpm /60 /4)
+setCpm(bpm / 4)
 
 
 
 
 
 
-// VOCALS
-_$: s("vocals:1").fit().room(.25).pan(rand).n("-7").scale(scale).scrub(berlin.seg(8).rib("<9 9 8 1>",1 )).trancegate(1.5, 45, 1).o(2).gain(1.5)
-_$: s("vocal_loop_140_fuckthatbeatup/4").fit()
+_GYW_MAIN_VOCALS: s("gyw_vocals:[<0>]")
+  .chop(32).cut(1).loopAt(8)
+  .sometimes(ply("2 | 3"))
+  //.rev()
+  .room(.35).rsize(7)
+  .delay(.25)
+  .coarse(2)
+  .lpf(7500)
+  .hpf(1000)
+  .compressor(20)
+  .o(4)
+
+
+
+
+_GYW_MAIN_MELODY: s("gyw_melody:[<0>]")
+  .chop(32).cut(2).loopAt(4)
+  .compressor(-20)
   .gain(.75)
-  .room(.75)
-  .o(2)
-
-// 130 BPM A MINOR
-_$: s("vocal_loop_130_Am/8").fit()
-  .trancegate(.75, 0, 2)
-  .gain(1)
-  .delay(.5).delaytime(bpm / 4)
-  .room(1)
-  .o(2)
-
-// 130 BPM A MINOR
-_$: s("vocal_loop_130_Am/8").fit()
-  .gain(1)
-  .delay(.5).delaytime(bpm / 4)
-  .room(1)
-  .o(2)
-
-// 142 BPM A MINOR
-_$: s("vocal_loop_142_Am/16").fit()
-  .begin("<.25 .26 .95 .95>")
-  .trancegate(.75, 45, 2)
-  .gain("<1.5 1.5 2 2>")
-  //.delay(.5).delaytime(bpm / 4)
-  .room(1)
-  .o(2)
-
-// 142 BPM A MINOR
-_$: s("vocal_loop_142_Am/16").fit()
-  .gain(1.25)
-  .delay(.5).delaytime(bpm / 4)
-  .room(1)
-  .o(2)
-
-
-
-
-
-
-// LOOPS
-// 162 BPM A# MINOR
-_$: s("guitar_loop_162_Bbmin/8").fit()
-  .distort("3:1:diode")
-  .compressor(-25)
-  .hpf(500)
-  .gain(.5)
-  .room(1)
-  .o(2)
-
-// 140 BPM DRUMS
-_$: s("drum_loop_140/8").fit()
-  .gain(.75)
-
-// 140 BPM D
-_$: s("bass_loop_140_D/4").fit()
-  .compressor(10)
-  .gain(.75)
-  .o(2)
-
-// 140 BPM D MAJOR
-_$: s("pluck_loop_140_Dmaj/8").fit()
-  //.scrub(berlin.fast(2).seg(8).rib("4 4 2 1 4 4 2 9", 1))
-  .room(1)
-  .o(2)
-
-
-
-
-
+  .room(1).rsize(2)
+  .o(3)
 
 
 
 
 // DRUMS
+const sidechain = "2:3:4"
 // - - - - KICKS
-_$: s("crate_bd:24!4").duckorbit("2").duckattack(bpm / 512).duckdepth(.75)
-_$: s("crate_bd:7!4").duckorbit("2").duckattack(bpm / 512).duckdepth(.75)
+_$: s("crate_bd:24!4").duck(sidechain).duckattack(bpm / 512).duckdepth(.75)
+_$: s("crate_bd:7!4").duck(sidechain).duckattack(bpm / 512).duckdepth(.75)
 _$: s("crate_bd:4")
   .beat("<0, 1?, 6>", 8)
-  .duckorbit("2").duckattack(bpm / 512).duckdepth(.75)
+  .duck(sidechain).duckattack(bpm / 512).duckdepth(.85)
 
+// - - - - SNARE
 _$: s("crate_sd:2")
   .beat("<<4, 12>@3 <4, 12, 15>>", 16)
   .gain(.75)
@@ -135,7 +77,7 @@ _$: s("hh!16")
 // - - - - CLAP
 _$: s("crate_cp:2")
   .room(.1)
-  .delay(.25).delaytime(bpm / 100 / 8)
+  .delay(.15).delaytime(bpm / 100 / 4)
   .beat("<<4, 12>@3 <4, 12, 15>>", 16)
 
 // - - - - RIMSHOT RYTHM
@@ -144,14 +86,13 @@ _$: s("crate_rim")
   .trancegate(1.5, 45, 1)
   .o(2)
 
-// - - - - NORMAL BREAK
-_$: s("breaks:4/2").fit()
+_REGULAR_BREAK: s("breaks:4")
+  .chop(16).cut(3).loopAt(2)
   .compressor(-10)
-  .gain(1)
+  .gain(.75)
   .o(2)
 
-// - - - - CHOPPED BREAK
-_$: s("breaks/2").fit()
+_CHOPPED_BREAK: s("breaks/2").fit()
   .scrub(
     irand(16).div(16).seg(8)
     .rib("<4 20 1 2 18 23 12 12>", 1)
@@ -178,7 +119,7 @@ const basslines = [
   "<0 2 3 5>",
   "<3 5 7 9>@3 <10 12 14 16>",
   "<5 5 7 0>",
-  "<3@3 7 5@3 0>",
+  "<0@4 7 5 3 3>",
   "<7 5 3 3>",
 ]
 
@@ -199,13 +140,10 @@ const arps = [
 
 // ---------------------------------------------------------------------------------------------
 
-const bassline = "<5 4 3 3>".add(7)
-const melody   = "<5 4 3 3>@3 <7 - 5 5>".add(7)
-const arp      = "<3 4 5 5>*8"
-
-
-
-
+const bassline = "<3 3 5 5 3 3 5 2>@3 <12 14>"
+const melody   = "<7 - 5 - 9 - 3>"
+const arp      = "<7 - 5 - 9 - 3>"
+const pad      = "<[<<5, 7, 9>@2 <0, 3, 5>@2>]>"
 
 
 
@@ -226,26 +164,24 @@ const arp      = "<3 4 5 5>*8"
 
 // BASS SECTION
 
-// - - - - MID BASS
-_$: s("supersaw")
-  //.fm(.5).fmwave("brown")
+_MID_BASS: s("supersaw")
+  .fm(.5).fmwave("brown")
   .sustain(slider(1,0,1))
   .decay(slider(0.424,0,1))
-  .release(slider(0.386))
+  .release(slider(0.58))
   .hpf(350)
-  .rlpf(slider(0.489))
+  .rlpf(slider(0.466))
   //.rlpf("<.35 .45 .5 .65>")
   .compressor(10)
   .gain(1.35)
-  //.trancegate(1.5, 45, 1)
+  .trancegate(1.5, 45, 1)
   .n(
     bassline
     .sub("14, 21")
   ).scale(scale)
   .o(2)
 
-// - - - - SUB BASS
-_$: s("sine")
+_SUB_BASS: s("sine")
   .fm(.5).fmwave("saw")
   .distort("3:3")
   .gain(.5)
@@ -266,17 +202,17 @@ _$: s("sine")
 // SYNTH SECTION
 
 // - - - - LEAD SYNTH
-_$: s("supersaw")
+_LEAD_SYNTH: s("supersaw")
   .fm(.5).fmwave("brown")
   .sustain(slider(0.673,0,1))
   .decay(slider(0.424,0,1))
   .release("<.2 .4 .6 .8>")
   .hpf(500)
-  .rlpf(slider(0.455))
-  .gain(slider(0.727))
+  .rlpf("<.7@6 .85 1>/2")
+  .gain(slider(0.443))
   .delay(.75)
   .delaytime(bpm / 4)
-  //.room(1)
+  .room(1)
   .compressor(10)
   .pan(rand)
   .trancegate(1.5, 90, 1)
@@ -286,28 +222,34 @@ _$: s("supersaw")
   ).scale(scale)
   .o(4)
 
-// - - - - PAD SAMPLER (NOT IN KEY)
-_$: s("<swpad swpad:2 swpad:4 swpad:3>/2")
-  .pan(rand)
-  .room(1)
-  .gain(1)
+_BIG_PAD: s("<supersaw!4>")
+  .att(.1)
+  .sustain(1)
+  .release(.95)
+  .hpf(800)
+  .lpf(1000)
+  .fm(.5).fmwave("brown")
+  .n(pad.sub(7)).scale(scale)
+  .phaser(.0125)
+  .room(1).rsize(75)
+  .delay(1).delaytime(rand)
+  .compressor(20)
+  .gain(.75)
   .o(2)
 
-// - - - - ARP SYNTH
-_$: s("sine!16")
-  .dec(.1).o(4)
+_LEAD_PAD: s("<[supersaw, supersaw/2]>!8")
+  .att(.1)
+  .sustain(1)
+  .release(.95)
+  .hpf(900)
+  .lpf(1500)
+  .fm(.5).fmwave("brown")
+  .n(arp).scale(scale)
+  .phaser(.0125)
+  .room(1).rsize(75)
+  .delay(1).delaytime(rand)
+  .compressor(20)
   .gain(.75)
-  .delay(.7)
-  .room(1)
-  .n(
-    arp
-     .add(14)
-  ).scale(scale)
-
-// - - - - GROOVE SYNTH
-_$: s("pulse")
-  .dec(.1).fm(time).fmh(time).o(4)
-  .gain(.75)
-  .beat("<2, 6, 10, 11, 14>", 16)
+  .o(2)
 
 // ---------------------------------------------------------------------------------------------
