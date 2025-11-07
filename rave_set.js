@@ -11,6 +11,7 @@ samples({
   'drum_loop_140': 'DS_ECT2_140_drum_loop_full_furnace.wav',
   'bass_loop_140_D': 'DS_ECT2_140_synth_bass_loop_moltensystem_D.wav',
   'pluck_loop_140_Dmaj': 'MO_PS_140_melody_loop_pluck_vocal_pretty_Dmaj.wav',
+  'vocal_loop_140_fuckthatbeatup': 'DS_ECT2_140_vocal_chop_loop_fuckthatbeatup.wav',
 }, 'github:crnvl/samples')
 
 
@@ -19,9 +20,9 @@ samples({
 
 // OPTIONS
 const scale = "d:major"
-const bpm = 140
+const bpm = 110
 all(x => x
-     //.room("<0 0 0 0 0 0 1>/2")
+     //.room(.5)
    )
 
 setCps(bpm /60 /4)
@@ -33,6 +34,10 @@ setCps(bpm /60 /4)
 
 // VOCALS
 _$: s("vocals:1").fit().room(.25).pan(rand).n("-7").scale(scale).scrub(berlin.seg(8).rib("<9 9 8 1>",1 )).trancegate(1.5, 45, 1).o(2).gain(1.5)
+_$: s("vocal_loop_140_fuckthatbeatup/4").fit()
+  .gain(.75)
+  .room(.75)
+  .o(2)
 
 // 130 BPM A MINOR
 _$: s("vocal_loop_130_Am/8").fit()
@@ -87,10 +92,12 @@ _$: s("drum_loop_140/8").fit()
 // 140 BPM D
 _$: s("bass_loop_140_D/4").fit()
   .compressor(10)
+  .gain(.75)
   .o(2)
 
 // 140 BPM D MAJOR
 _$: s("pluck_loop_140_Dmaj/8").fit()
+  //.scrub(berlin.fast(2).seg(8).rib("4 4 2 1 4 4 2 9", 1))
   .room(1)
   .o(2)
 
@@ -106,6 +113,13 @@ _$: s("pluck_loop_140_Dmaj/8").fit()
 // - - - - KICKS
 _$: s("crate_bd:24!4").duckorbit("2").duckattack(bpm / 512).duckdepth(.75)
 _$: s("crate_bd:7!4").duckorbit("2").duckattack(bpm / 512).duckdepth(.75)
+_$: s("crate_bd:4")
+  .beat("<0, 1?, 6>", 8)
+  .duckorbit("2").duckattack(bpm / 512).duckdepth(.75)
+
+_$: s("crate_sd:2")
+  .beat("<<4, 12>@3 <4, 12, 15>>", 16)
+  .gain(.75)
 
 // - - - - OFFBEAT HIHAT
 _$: s("crate_hh:1")
@@ -131,7 +145,7 @@ _$: s("crate_rim")
   .o(2)
 
 // - - - - NORMAL BREAK
-_$: s("breaks:2/2").fit()
+_$: s("breaks:4/2").fit()
   .compressor(-10)
   .gain(1)
   .o(2)
@@ -258,7 +272,7 @@ _$: s("supersaw")
   .decay(slider(0.424,0,1))
   .release("<.2 .4 .6 .8>")
   .hpf(500)
-  .rlpf(slider(0.784))
+  .rlpf(slider(0.455))
   .gain(slider(0.727))
   .delay(.75)
   .delaytime(bpm / 4)
@@ -275,6 +289,7 @@ _$: s("supersaw")
 // - - - - PAD SAMPLER (NOT IN KEY)
 _$: s("<swpad swpad:2 swpad:4 swpad:3>/2")
   .pan(rand)
+  .room(1)
   .gain(1)
   .o(2)
 
